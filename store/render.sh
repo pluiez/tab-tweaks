@@ -23,10 +23,15 @@ shot() {
     --virtual-time-budget=3000 --window-size="$2,$(($3 + 200))" \
     --screenshot="$tmp/shot.png" "$1" >/dev/null 2>&1
   if [ "${5:-}" = opaque ]; then
-    "$CONVERT" "$tmp/shot.png" -crop "${2}x${3}+0+0" +repage -background white -alpha remove "PNG24:$4"
+    fmt=PNG24 flatten="-background white -alpha remove"
   else
-    "$CONVERT" "$tmp/shot.png" -crop "${2}x${3}+0+0" +repage "PNG32:$4"
+    fmt=PNG32 flatten=
   fi
+  # -strip and the excluded chunks drop timestamps, so re-rendering unchanged
+  # sources gives byte-identical files.
+  # shellcheck disable=SC2086
+  "$CONVERT" "$tmp/shot.png" -crop "${2}x${3}+0+0" +repage $flatten \
+    -strip -define png:exclude-chunks=date,time "$fmt:$4"
   echo "$4"
 }
 
