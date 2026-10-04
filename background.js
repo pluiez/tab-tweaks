@@ -90,13 +90,14 @@ chrome.tabs.onCreated.addListener(async (tab) => {
   if (tab.active) getWindow(tab.windowId).active = tab.id;
   saveState();
 
-  if (!tab.openerTabId) return;
+  // Only background tabs need moving. Chrome already puts a foreground link
+  // tab right after its opener, and foreground tabs from Ctrl+T, the New Tab
+  // button or Alt+Enter also carry an openerTabId but must stay at the end.
+  if (!tab.openerTabId || tab.active) return;
 
-  // Snapshot Chrome's intended activation state and the previously-active tab
-  // before the queued async work. If our tabs.move spuriously activates the
-  // new tab (observed on rapid sequential moves), we use these to restore the
-  // original focus.
-  const intendedActive = tab.active;
+  // Snapshot the previously-active tab before the queued async work. If our
+  // tabs.move spuriously activates the new tab (observed on rapid sequential
+  // moves), we use it to restore the original focus.
   const previouslyActive = getWindow(tab.windowId).active;
 
   enqueueForWindow(tab.windowId, async () => {
@@ -121,11 +122,10 @@ chrome.tabs.onCreated.addListener(async (tab) => {
       return;
     }
 
-    // If the page/browser intended the new tab to be background, but our move
-    // flipped it to active, restore focus to the originally active tab. The
-    // tabs.get re-check guards against overriding a manual user switch during
-    // our async work.
-    if (intendedActive === false && previouslyActive && previouslyActive !== tab.id) {
+    // The tab was opened in the background; if our move flipped it to active,
+    // restore focus to the originally active tab. The tabs.get re-check guards
+    // against overriding a manual user switch during our async work.
+    if (previouslyActive && previouslyActive !== tab.id) {
       try {
         const cur = await chrome.tabs.get(tab.id);
         if (cur && cur.active) {
