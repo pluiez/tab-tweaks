@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- Small promo tile, 440×280. Rendered by store/render.sh as promo.html?lang=en|zh -->
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tab Tweaks promo tile</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 440px; height: 280px; overflow: hidden; }
+  body {
+    font-family: "Noto Sans SC", "Liberation Sans", Arial, sans-serif;
+    color: #fff;
+    background:
+      radial-gradient(320px 220px at 18% 12%, rgba(255, 255, 255, .22) 0%, rgba(255, 255, 255, 0) 70%),
+      linear-gradient(160deg, #6577FF 0%, #3F4BDB 100%);
+  }
+  .tile { width: 440px; height: 280px; display: flex; align-items: center; gap: 22px; padding: 0 34px; }
+  svg { flex: 0 0 auto; width: 118px; height: 118px; }
+  h1 { font-size: 38px; line-height: 1.05; font-weight: 800; letter-spacing: -0.5px; }
+  p { margin-top: 12px; font-size: 18px; line-height: 1.4; color: rgba(255, 255, 255, .88); text-wrap: balance; }
+</style>
+</head>
+<body>
+<div class="tile">
+  <!-- icon artwork without the badge (same geometry as store/icon.svg) -->
+  <svg viewBox="22 30 84 70" aria-hidden="true">
+    <path d="M26 56V40a7 7 0 0 1 7-7h12a7 7 0 0 1 7 7v16z" fill="#fff"/>
+    <path d="M55 56V40a7 7 0 0 1 7-7h8a7 7 0 0 1 7 7v16z" fill="#fff" fill-opacity=".42"/>
+    <path d="M80 56V40a7 7 0 0 1 7-7h8a7 7 0 0 1 7 7v16z" fill="#fff" fill-opacity=".42"/>
+    <rect x="22" y="56" width="84" height="5" rx="2.5" fill="#fff"/>
+    <path d="M90 81H42M54 69L42 81l12 12" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div>
+    <h1>Tab Tweaks</h1>
+    <p id="tagline"></p>
+  </div>
+</div>
+<script>
+  const zh = new URLSearchParams(location.search).get('lang') === 'zh';
+  document.documentElement.lang = zh ? 'zh-CN' : 'en';
+  document.getElementById('tagline').textContent = zh
+    ? '更顺手的标签页焦点与位置'
+    : 'Smarter tab focus and placement';
+</script>
+</body>
+</html>

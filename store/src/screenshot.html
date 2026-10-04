@@ -1,0 +1,152 @@
+<!doctype html>
+<!-- Store screenshot, 1280×800. Rendered by store/render.sh as
+     screenshot.html?shot=1|2&lang=en|zh -->
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tab Tweaks screenshot</title>
+<style>
+  :root {
+    --brand: #4A5BEF;
+    --brand-ink: #3440C9;
+    --ink: #1B1F33;
+    --muted: #697089;
+    --bar: #E2E6F0;
+    --line: #CDD3E1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 800px; overflow: hidden; }
+  body {
+    font-family: "Noto Sans SC", "Liberation Sans", Arial, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(900px 520px at 92% -8%, #DCE1FF 0%, rgba(220, 225, 255, 0) 70%),
+      #F5F6FB;
+  }
+  .page { position: relative; width: 1280px; height: 800px; padding: 64px 110px 0; }
+  h1 { font-size: 48px; line-height: 1.15; font-weight: 800; letter-spacing: -0.3px; }
+  .sub { margin-top: 14px; font-size: 22px; line-height: 1.5; color: var(--muted); }
+  .rows { margin-top: 40px; display: grid; gap: 22px; }
+  .head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 19px; font-weight: 600; }
+  .pill { font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: #DCE0EA; color: var(--muted); }
+  .row.before .pill { background: var(--ink); color: #fff; }
+  .row.ours .pill { background: var(--brand); color: #fff; }
+  .row.native { opacity: .6; }
+  .win { border-radius: 14px; overflow: hidden; background: var(--bar); box-shadow: 0 1px 2px rgba(27, 31, 51, .08), 0 8px 24px rgba(27, 31, 51, .06); }
+  .row.ours .win { box-shadow: 0 0 0 3px var(--brand), 0 10px 28px rgba(74, 91, 239, .22); }
+  .strip { display: flex; align-items: flex-end; gap: 6px; height: 60px; padding: 8px 12px 0; }
+  .toolbar { height: 12px; background: #fff; border-top: 1px solid var(--line); }
+  .tab {
+    position: relative; flex: 0 0 auto; width: var(--w); height: 52px;
+    display: flex; align-items: center; gap: 10px; padding: 0 14px;
+    border-radius: 12px 12px 0 0; font-size: 19px; font-weight: 600; color: var(--muted);
+  }
+  .tab::before { content: ""; flex: 0 0 auto; width: 18px; height: 18px; border-radius: 5px; background: #B9C0D3; }
+  .tab.active { background: #fff; color: var(--ink); z-index: 1; margin-bottom: -1px; height: 53px; }
+  .tab.active::before { background: #8C95AE; }
+  .tab.new { color: var(--brand-ink); }
+  .tab.new::before { background: var(--brand); }
+  .row.ours .tab.active { color: var(--brand-ink); }
+  .row.ours .tab.active::before { background: var(--brand); }
+  .tab .x {
+    margin-left: auto; width: 24px; height: 24px; border-radius: 50%;
+    display: grid; place-items: center; background: #E5484D; color: #fff; font-size: 15px; font-weight: 800;
+  }
+  .tab .n {
+    position: absolute; top: 5px; right: 8px; min-width: 20px; height: 20px; padding: 0 5px;
+    border-radius: 10px; display: grid; place-items: center;
+    font-size: 12px; font-weight: 800; color: #fff; background: #9AA2B8;
+  }
+  .row.ours .tab .n { background: var(--brand); }
+  .brand { position: absolute; left: 110px; bottom: 40px; display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; }
+  .brand img { width: 36px; height: 36px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1 id="title"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="rows" id="rows"></div>
+  <div class="brand"><img src="../icon.svg" alt="">Tab Tweaks</div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const lang = q.get('lang') === 'zh' ? 'zh' : 'en';
+  const shot = q.get('shot') === '2' ? 2 : 1;
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+  // A tab spec is "C" (plain), "*C" (active), "*C!" (active, being closed),
+  // "+M1" (new tab M, opened 1st).
+  const SHOTS = {
+    1: {
+      en: {
+        title: 'Close a tab, land on its left neighbor',
+        sub: 'Chrome normally jumps to the tab on the right. With Tab Tweaks, closing the current tab moves focus to the tab on its left.',
+        rows: [
+          ['before', 'Before', 'You close tab C'],
+          ['native', 'Chrome', 'Focus jumps right, to D'],
+          ['ours', 'Tab Tweaks', 'Focus moves left, to B'],
+        ],
+      },
+      zh: {
+        title: '关闭标签页，焦点回到左边',
+        sub: 'Chrome 默认会跳到右边的标签；装上 Tab Tweaks 后，关闭当前标签页，焦点会落到它左边的标签上。',
+        rows: [
+          ['before', '关闭前', '关闭当前标签 C'],
+          ['native', 'Chrome 默认', '焦点跳到右边的 D'],
+          ['ours', 'Tab Tweaks', '焦点回到左边的 B'],
+        ],
+      },
+      strips: [['A', 'B', '*C!', 'D', 'E'], ['A', 'B', '*D', 'E'], ['A', '*B', 'D', 'E']],
+      width: 190,
+    },
+    2: {
+      en: {
+        title: 'Background links stack beside their page',
+        sub: 'Middle-click or Ctrl/⌘-click several links: the newest tab sits closest to the page instead of being queued at the far end.',
+        rows: [
+          ['before', 'Before', 'On tab C, open links M, L, N, O, P in that order'],
+          ['native', 'Chrome', 'Queued after C: the newest ends up farthest away'],
+          ['ours', 'Tab Tweaks', 'Stacked next to C: the newest is closest'],
+        ],
+      },
+      zh: {
+        title: '后台打开的链接，紧挨来源页面叠放',
+        sub: '中键或 Ctrl/⌘ 点击多个链接：最新打开的标签离来源页面最近，不再一个个排到最后。',
+        rows: [
+          ['before', '打开前', '在标签 C 上依次打开链接 M、L、N、O、P'],
+          ['native', 'Chrome 默认', '依次排在 C 后面，最新的离 C 最远'],
+          ['ours', 'Tab Tweaks', '紧挨 C 叠放，最新的离 C 最近'],
+        ],
+      },
+      strips: [
+        ['A', 'B', '*C', 'D', 'E'],
+        ['A', 'B', '*C', '+M1', '+L2', '+N3', '+O4', '+P5', 'D', 'E'],
+        ['A', 'B', '*C', '+P5', '+O4', '+N3', '+L2', '+M1', 'D', 'E'],
+      ],
+      width: 98,
+    },
+  };
+
+  const s = SHOTS[shot];
+  const t = s[lang];
+  document.getElementById('title').textContent = t.title;
+  document.getElementById('sub').textContent = t.sub;
+
+  const tabHtml = (spec, w) => {
+    const m = spec.match(/^([*+]?)([A-Z])(\d?)(!?)$/);
+    const cls = ['tab', m[1] === '*' && 'active', m[1] === '+' && 'new'].filter(Boolean).join(' ');
+    return `<div class="${cls}" style="--w:${w}px">${m[2]}` +
+      (m[4] ? '<span class="x">✕</span>' : '') +
+      (m[3] ? `<span class="n">${m[3]}</span>` : '') + '</div>';
+  };
+  document.getElementById('rows').innerHTML = t.rows.map(([kind, pill, text], i) => {
+    const strip = s.strips[i];
+    return `<div class="row ${kind}">
+      <div class="head"><span class="pill">${pill}</span>${text}</div>
+      <div class="win"><div class="strip">${strip.map((x) => tabHtml(x, s.width)).join('')}</div><div class="toolbar"></div></div>
+    </div>`;
+  }).join('');
+</script>
+</body>
+</html>

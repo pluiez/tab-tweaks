@@ -13,6 +13,12 @@
 2. 右上角打开"开发者模式"。
 3. 点"加载已解压的扩展程序"，选择本仓库目录。
 
+## 打包与发布
+
+- `scripts/package.sh` 生成商店上传包 `dist/tab-tweaks-<version>.zip`（只含 `manifest.json`、`background.js`、`_locales/`、`icons/`）。
+- `store/` 是商店素材：截图、宣传图块、Edge 徽标。`store/render.sh` 从 `store/icon.svg` 和 `store/src/*.html` 重新生成它们以及 `icons/`。
+- 发布到 Chrome 应用商店和 Edge 加载项的完整步骤、可直接粘贴的文案见 [docs/publishing.md](docs/publishing.md)；隐私政策见 [PRIVACY.md](PRIVACY.md)。
+
 ## 权限
 
 仅一项：`storage`，安装时不会弹出任何权限警告。它只用于 `chrome.storage.session`：把各窗口的标签顺序暂存在浏览器内存里（不写磁盘，浏览器退出即清空），让 service worker 被回收后醒来能接着用。
