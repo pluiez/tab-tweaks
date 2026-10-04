@@ -1,0 +1,12 @@
+# Store upload packages (built by scripts/package.sh)
+dist/
+*.zip
+*.crx
+
+# Private key from chrome://extensions "Pack extension" — never commit
+*.pem
+
+# OS / tooling noise
+.DS_Store
+Thumbs.db
+node_modules/
