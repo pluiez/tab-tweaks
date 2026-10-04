@@ -175,7 +175,7 @@ Store listings 页右上角点「Publish」→ 在 **Notes for certification** �
 English：
 
 ```text
-Two small fixes to how Chrome and Edge handle tabs.
+Two small fixes to how your browser handles tabs.
 
 • Close the current tab and focus moves to the tab on its left
 The browser normally jumps to the tab on the right. With Tab Tweaks, closing C in "A B C D E" leaves you on B.
@@ -191,7 +191,7 @@ There are no settings and no pop-ups. Tab Tweaks only looks at tab positions, ne
 中文（简体）：
 
 ```text
-两处标签页行为的小改进，适用于 Chrome 和 Edge。
+对浏览器标签页行为的两处小改进。
 
 • 关闭当前标签页后，焦点落到它左边的标签
 浏览器默认会跳到右边的标签。装上 Tab Tweaks 后，在「A B C D E」中关闭 C，焦点会回到 B。
