@@ -1,0 +1,8 @@
+{
+  "extName": {
+    "message": "Tab Tweaks"
+  },
+  "extDescription": {
+    "message": "关闭当前标签页后，焦点落到它左边的标签；在后台打开的链接紧挨着来源页面叠放，最新打开的离它最近。"
+  }
+}

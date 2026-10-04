@@ -1,9 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "Tab Tweaks",
+  "name": "__MSG_extName__",
   "version": "1.0.0",
-  "description": "Close active tab → focus left neighbor; new opener-linked tabs stack-insert next to opener.",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"

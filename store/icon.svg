@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5C70FF"/>
+      <stop offset="1" stop-color="#3F4BDB"/>
+    </linearGradient>
+  </defs>
+  <!-- 96×96 artwork inside 16px transparent padding (Chrome Web Store icon guideline) -->
+  <rect x="16" y="16" width="96" height="96" rx="22" fill="url(#bg)"/>
+  <!-- tab strip: the left tab gets focus, the other two are dimmed -->
+  <path d="M26 56V40a7 7 0 0 1 7-7h12a7 7 0 0 1 7 7v16z" fill="#fff"/>
+  <path d="M55 56V40a7 7 0 0 1 7-7h8a7 7 0 0 1 7 7v16z" fill="#fff" fill-opacity=".42"/>
+  <path d="M80 56V40a7 7 0 0 1 7-7h8a7 7 0 0 1 7 7v16z" fill="#fff" fill-opacity=".42"/>
+  <rect x="22" y="56" width="84" height="5" rx="2.5" fill="#fff"/>
+  <!-- focus goes left -->
+  <path d="M90 81H42M54 69L42 81l12 12" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
