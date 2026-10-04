@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Close active tab → focus left neighbor; new opener-linked tabs stack-insert next to opener.",
   "minimum_chrome_version": "116",
-  "permissions": [],
+  "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
   }
