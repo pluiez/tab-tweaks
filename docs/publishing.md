@@ -21,7 +21,7 @@ Edge 基于 Chromium，代码无需任何修改，两边上传同一个 zip。�
    - 打开 `chrome://extensions`（Edge 为 `edge://extensions`），打开「开发者模式」，点「加载已解压的扩展程序」，选择仓库目录。
    - 开 5 个标签，激活中间那个后关掉 → 焦点应落到左边。
    - 在一个页面上用中键点开几个链接 → 新标签应紧挨这个页面，最新的离它最近。
-   - 按 Ctrl+T → 新标签应出现在最右边（保持原生行为）。
+   - 按 Ctrl+T → 新标签应出现在当前标签右侧，并且可以直接输入网址。
    - 放置一分钟以上（浏览器会挂起扩展后台），再关闭当前标签 → 焦点仍应落到左边。
 3. **打包**：在仓库根目录运行 `scripts/package.sh`，生成 `dist/tab-tweaks-<版本>.zip`，里面只有 `manifest.json`、`background.js`、`_locales/`、`icons/`。
 
@@ -167,23 +167,26 @@ Store listings 页右上角点「Publish」→ 在 **Notes for certification** �
 
 ### A.1 简短说明（已写在 `_locales/*/messages.json`，无需填写）
 
-- en：Close the current tab and focus moves to the tab on its left. Links opened in the background stack right beside their page.
-- zh_CN：关闭当前标签页后，焦点落到它左边的标签；在后台打开的链接紧挨着来源页面叠放，最新打开的离它最近。
+- en：Closing the current tab focuses the tab on its left. New tabs and background links open right next to the current tab.
+- zh_CN：关闭当前标签页后，焦点落到它左边的标签；新建的标签页和后台打开的链接，都出现在当前标签页紧右侧。
 
 ### A.2 详细说明
 
 English：
 
 ```text
-Two small fixes to how your browser handles tabs.
+Three small fixes to how your browser handles tabs.
 
 • Close the current tab and focus moves to the tab on its left
 The browser normally jumps to the tab on the right. With Tab Tweaks, closing C in "A B C D E" leaves you on B.
 
+• New tabs open right next to the current tab
+Ctrl+T, the New Tab button and Alt+Enter in the address bar normally put the new tab at the far end of the tab strip. With Tab Tweaks it opens immediately to the right of the tab you are on.
+
 • Links opened in the background stack right beside their page
 Middle-click, Ctrl/⌘-click or "Open link in new tab" several links on the same page, and each new tab lands immediately to the right of that page, so the newest one is the closest. Opening M, L, N, O, P from C gives "A B C P O N L M D E" instead of "A B C M L N O P D E".
 
-Everything else keeps the browser's own behavior: closing a background tab, Ctrl+T and the New Tab button, the address bar, bookmarks and reopening closed tabs are unchanged.
+Everything else keeps the browser's own behavior: closing a background tab, bookmarks and reopening closed tabs are unchanged.
 
 There are no settings and no pop-ups. Tab Tweaks only looks at tab positions, never at page content, addresses or titles. It makes no network requests and collects no data. Its only permission, "storage", shows no install warning.
 ```
@@ -191,15 +194,18 @@ There are no settings and no pop-ups. Tab Tweaks only looks at tab positions, ne
 中文（简体）：
 
 ```text
-对浏览器标签页行为的两处小改进。
+对浏览器标签页行为的三处小改进。
 
 • 关闭当前标签页后，焦点落到它左边的标签
 浏览器默认会跳到右边的标签。装上 Tab Tweaks 后，在「A B C D E」中关闭 C，焦点会回到 B。
 
+• 新建的标签页紧挨当前标签页打开
+按 Ctrl+T、点新建标签页按钮或在地址栏按 Alt+Enter，浏览器默认会把新标签页放到最右边。装上 Tab Tweaks 后，它会出现在当前标签页的紧右侧。
+
 • 在后台打开的链接，紧挨来源页面叠放
 在同一个页面上用中键、Ctrl/⌘+点击或右键「在新标签页中打开链接」打开多个链接，每个新标签都会放在这个页面的紧右侧，最新打开的离它最近。在 C 上依次打开 M、L、N、O、P，顺序是「A B C P O N L M D E」，而不是「A B C M L N O P D E」。
 
-其他情况保持浏览器原样：关闭后台标签页、Ctrl+T 与新建标签页按钮、地址栏、书签、恢复已关闭的标签页都不受影响。
+其他情况保持浏览器原样：关闭后台标签页、书签、恢复已关闭的标签页都不受影响。
 
 没有设置项，也没有弹窗。Tab Tweaks 只看标签页的位置，不读取网页内容、网址或标题；不联网，不收集任何数据。它唯一的权限「storage」在安装时不会出现任何权限警告。
 ```
@@ -207,10 +213,10 @@ There are no settings and no pop-ups. Tab Tweaks only looks at tab positions, ne
 ### A.3 单一用途说明（Single purpose）
 
 ```text
-Tab Tweaks adjusts two built-in tab behaviors: which tab gets focus after you close the active tab (the tab on its left instead of the one on the right), and where tabs opened in the background from a page are placed (immediately to the right of that page, newest first).
+Tab Tweaks controls where focus and new tabs go in the tab strip: after you close the active tab, focus moves to the tab on its left instead of the one on the right; new tabs (Ctrl+T, the New Tab button) open right next to the current tab instead of at the end; and links opened in the background from a page are placed immediately to its right, newest first.
 ```
 
-（Tab Tweaks 调整两项浏览器自带的标签行为：关闭当前标签后焦点落到哪个标签，以及从页面在后台打开的新标签放在哪里。）
+（Tab Tweaks 控制标签栏里焦点和新标签的去向：关闭当前标签后焦点落到左边的标签；新建标签页出现在当前标签右侧；从页面在后台打开的链接紧挨该页面，最新的在最前。）
 
 ### A.4 `storage` 权限理由（Permission justification）
 
@@ -232,8 +238,8 @@ Used only for chrome.storage.session, to keep the extension's record of each win
 ```text
 No account or setup is needed; the extension has no UI.
 1. Open five tabs (A B C D E) and activate C. Close C: focus moves to B (the browser would normally pick D).
-2. On any page with several links, middle-click (or Ctrl+click) three links in a row: each new tab appears immediately to the right of that page, the most recent one closest.
-3. Press Ctrl+T: the new tab opens at the end of the tab strip as usual (unchanged).
+2. Activate B and press Ctrl+T: the new tab opens immediately to the right of B (the browser would normally put it at the end). The address bar keeps focus, so you can type a URL right away.
+3. On any page with several links, middle-click (or Ctrl+click) three links in a row: each new tab appears immediately to the right of that page, the most recent one closest.
 The only permission is "storage", used for chrome.storage.session to keep the tab order across service worker restarts.
 ```
 

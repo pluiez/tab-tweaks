@@ -3,6 +3,6 @@
     "message": "Tab Tweaks"
   },
   "extDescription": {
-    "message": "Close the current tab and focus moves to the tab on its left. Links opened in the background stack right beside their page."
+    "message": "Closing the current tab focuses the tab on its left. New tabs and background links open right next to the current tab."
   }
 }

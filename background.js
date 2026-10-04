@@ -90,14 +90,16 @@ chrome.tabs.onCreated.addListener(async (tab) => {
   if (tab.active) getWindow(tab.windowId).active = tab.id;
   saveState();
 
-  // Only background tabs need moving. Chrome already puts a foreground link
-  // tab right after its opener, and foreground tabs from Ctrl+T, the New Tab
-  // button or Alt+Enter also carry an openerTabId but must stay at the end.
-  if (!tab.openerTabId || tab.active) return;
+  // Every tab with an opener goes right after it. Background link tabs thus
+  // stack newest-first; tabs from Ctrl+T, the New Tab button or Alt+Enter,
+  // which Chrome opens at the end but links to the current tab, land beside
+  // it. Foreground link tabs are already in place and are skipped below.
+  if (!tab.openerTabId) return;
 
   // Snapshot the previously-active tab before the queued async work. If our
-  // tabs.move spuriously activates the new tab (observed on rapid sequential
-  // moves), we use it to restore the original focus.
+  // tabs.move spuriously activates a background tab (observed on rapid
+  // sequential moves), we use it to restore the original focus.
+  const background = !tab.active;
   const previouslyActive = getWindow(tab.windowId).active;
 
   enqueueForWindow(tab.windowId, async () => {
@@ -122,10 +124,11 @@ chrome.tabs.onCreated.addListener(async (tab) => {
       return;
     }
 
-    // The tab was opened in the background; if our move flipped it to active,
-    // restore focus to the originally active tab. The tabs.get re-check guards
-    // against overriding a manual user switch during our async work.
-    if (previouslyActive && previouslyActive !== tab.id) {
+    // If the tab was opened in the background but our move flipped it to
+    // active, restore focus to the originally active tab. The tabs.get
+    // re-check guards against overriding a manual user switch during our
+    // async work.
+    if (background && previouslyActive && previouslyActive !== tab.id) {
       try {
         const cur = await chrome.tabs.get(tab.id);
         if (cur && cur.active) {
